@@ -1,0 +1,49 @@
+﻿@model CourseDeptVm
+@{
+    ViewData["Title"] = "Course Details";
+}
+
+<div class="page-header">
+    <div><h1>📚 @Model.Name</h1><p>Course details</p></div>
+    <div class="d-flex gap-2">
+        <a asp-action="Upsert" asp-route-id="@Model.Id" class="btn btn-outline">✏️ Edit</a>
+        <a asp-action="Index" class="btn btn-ghost">← Back</a>
+    </div>
+</div>
+
+<div class="card" style="max-width:600px; margin-bottom:20px">
+    <div class="card-header"><div class="card-title">Info</div></div>
+    <div class="card-body">
+        <div class="detail-grid">
+            <div class="detail-item"><div class="detail-label">ID</div><div class="detail-value mono">#@Model.Id</div></div>
+            <div class="detail-item"><div class="detail-label">Name</div><div class="detail-value">@Model.Name</div></div>
+            <div class="detail-item"><div class="detail-label">Department</div><div class="detail-value">@(Model.DepartmentName ?? "—")</div></div>
+            <div class="detail-item"><div class="detail-label">Hours</div><div class="detail-value mono">@(Model.Hours.ToString() ?? "—")</div></div>
+            <div class="detail-item"><div class="detail-label">Max Degree</div><div class="detail-value mono">@(Model.Degree)</div></div>
+            <div class="detail-item"><div class="detail-label">Min Degree</div><div class="detail-value mono">@(Model.MinDegree)</div></div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header"><div class="card-title">📝 Results (@Model.CrsResults.Count)</div></div>
+    <div class="table-wrapper">
+        <table>
+            <thead><tr><th>Trainee</th><th>Degree</th><th>Status</th></tr></thead>
+            <tbody>
+                @if (!Model.CrsResults.Any())
+                {
+                    <tr><td colspan="3" class="text-muted">No results yet</td></tr>
+                }
+                @foreach (var r in Model.CrsResults)
+                {
+                    <tr>
+                        <td class="fw-bold text-primary">@(r.Trainee?.Name ?? "—")</td>
+                        <td class="mono">@(r.Degree)</td>
+                        <td><span class="badge @(r.Degree >= 60 ? "badge-success" : "badge-warning")">@(r.Degree >= 60 ? "Pass" : "Fail")</span></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

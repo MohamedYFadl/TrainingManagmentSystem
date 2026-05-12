@@ -1,0 +1,95 @@
+﻿@model dynamic
+@* 
+    Usage: 
+    @await Html.PartialAsync("_Pagination", new { 
+        PageIndex = Model.PageIndex, TotalPages = Model.TotalPages, 
+        TotalCount = Model.TotalCount, PageSize = Model.PageSize,
+        Search = ViewBag.Search, Action = "Index", Controller = "Departments" 
+    })
+*@
+
+@{
+    int pageIndex = (int)Model.PageIndex;
+    int totalPages = (int)Model.TotalPages;
+    int totalCount = (int)Model.TotalCount;
+    int pageSize = (int)Model.PageSize;
+    string search = (string?)Model.Search ?? "";
+    string action = (string)Model.Action;
+    string controller = (string)Model.Controller;
+
+    int from = totalCount == 0 ? 0 : (pageIndex - 1) * pageSize + 1;
+    int to = Math.Min(pageIndex * pageSize, totalCount);
+
+    // Build page numbers: show up to 5 around current
+    int startPage = Math.Max(1, pageIndex - 2);
+    int endPage = Math.Min(totalPages, pageIndex + 2);
+    if (endPage - startPage < 4)
+    {
+        if (startPage == 1) endPage = Math.Min(totalPages, startPage + 4);
+        else startPage = Math.Max(1, endPage - 4);
+    }
+}
+
+<div class="pagination-bar">
+    <div class="pagination-info">
+        Showing <strong>@from–@to</strong> of <strong>@totalCount</strong> results
+    </div>
+
+    @if (totalPages > 1)
+    {
+    }
+    <div class="pagination-controls">
+        @* Previous *@
+        @if (pageIndex > 1)
+        {
+            <a class="page-btn" asp-action="@action" asp-controller="@controller"
+               asp-route-pageIndex="@(pageIndex - 1)" asp-route-search="@search">‹</a>
+        }
+        else
+        {
+            <span class="page-btn disabled">‹</span>
+        }
+
+        @* First page if not visible *@
+        @if (startPage > 1)
+        {
+            <a class="page-btn" asp-action="@action" asp-controller="@controller"
+               asp-route-pageIndex="1" asp-route-search="@search">1</a>
+            @if (startPage > 2)
+            {
+                <span class="page-ellipsis">…</span>
+            }
+        }
+
+        @* Page numbers *@
+        @for (int i = startPage; i <= endPage; i++)
+        {
+            <a class="page-btn @(i == pageIndex ? "active" : "")"
+               asp-action="@action" asp-controller="@controller"
+               asp-route-pageIndex="@i" asp-route-search="@search">@i</a>
+        }
+
+        @* Last page if not visible *@
+        @if (endPage < totalPages)
+        {
+            @if (endPage < totalPages - 1)
+            {
+                <span class="page-ellipsis">…</span>
+            }
+            <a class="page-btn" asp-action="@action" asp-controller="@controller"
+               asp-route-pageIndex="@totalPages" asp-route-search="@search">@totalPages</a>
+        }
+
+        @* Next *@
+        @if (pageIndex < totalPages)
+        {
+            <a class="page-btn" asp-action="@action" asp-controller="@controller"
+               asp-route-pageIndex="@(pageIndex + 1)" asp-route-search="@search">›</a>
+        }
+        else
+        {
+            <span class="page-btn disabled">›</span>
+        }
+    </div>
+
+</div>

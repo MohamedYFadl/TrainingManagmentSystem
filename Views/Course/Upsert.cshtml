@@ -1,0 +1,55 @@
+﻿@model CourseDeptVm
+@{
+    ViewData["Title"] = Model.Id == 0 ? "New Course" : "Edit Course";
+}
+
+<div class="page-header">
+    <div><h1>📚 @ViewData["Title"]</h1><p>@(Model.Id == 0 ? "Add a new course" : "Edit course details")</p></div>
+    <a asp-action="Index" class="btn btn-ghost">← Back</a>
+</div>
+
+<div class="card" style="max-width:700px">
+    <div class="card-header"><div class="card-title">Course Details</div></div>
+    <div class="card-body">
+        <form asp-action="Upsert">
+            <div asp-validation-summary="ModelOnly" class="validation-summary-errors"></div>
+            <div class="form-grid">
+                <input asp-for="Id" type="hidden" />
+                <div class="form-group" style="grid-column:1/-1">
+                    <label asp-for="Name" class="form-label">Course Name *</label>
+                    <input asp-for="Name" class="form-control" placeholder="e.g. C# Programming" />
+                    <span asp-validation-for="Name" class="field-validation-error"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DeptId" class="form-label">Department</label>
+                    <select asp-for="DeptId" asp-items="Model.Departments" class="form-control">
+                        <option value="">-- Select Department --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Hours" class="form-label">Hours</label>
+                    <input asp-for="Hours" class="form-control" type="number" placeholder="e.g. 40" />
+                    <span asp-validation-for="Hours" class="field-validation-error"></span>
+
+                </div>
+                <div class="form-group">
+                    <label asp-for="Degree" class="form-label">Degree</label>
+                    <input asp-for="Degree" class="form-control" placeholder="e.g. 100" />
+                    <span asp-validation-for="Degree" class="field-validation-error"></span>
+
+                </div>
+                <div class="form-group">
+                    <label asp-for="MinDegree" class="form-label">Min Degree</label>
+                    <input asp-for="MinDegree" class="form-control" placeholder="e.g. 50" />
+                    <span asp-validation-for="MinDegree" class="field-validation-error"></span>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">✅ @(Model.Id == 0 ? "Create Course" : "Update Course")</button>
+                <a asp-action="Index" class="btn btn-ghost">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<partial name="_ValidationScriptsPartial" />

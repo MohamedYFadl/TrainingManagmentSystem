@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Training System</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <div class="logo-icon">🎓</div>
+            <div>
+                <div class="logo-text">TrainingMS</div>
+                <div class="logo-sub">Management System</div>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section-label">Overview</div>
+            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Home" ? "active" : "")"
+               asp-controller="Home" asp-action="Index">
+                <span class="nav-icon">📊</span> Dashboard
+            </a>
+
+            <div class="nav-section-label">Entities</div>
+            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Departments" ? "active" : "")"
+               asp-controller="Department" asp-action="Index">
+                <span class="nav-icon">🏢</span> Departments
+            </a>
+            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Instructors" ? "active" : "")"
+               asp-controller="Instructor" asp-action="Index">
+                <span class="nav-icon">👨‍🏫</span> Instructors
+            </a>
+            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Courses" ? "active" : "")"
+               asp-controller="Course" asp-action="Index">
+                <span class="nav-icon">📚</span> Courses
+            </a>
+            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Trainees" ? "active" : "")"
+               asp-controller="Trainees" asp-action="Index">
+                <span class="nav-icon">🧑‍🎓</span> Trainees
+            </a>
+            <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "CrsResults" ? "active" : "")"
+               asp-controller="CrsResults" asp-action="Index">
+                <span class="nav-icon">📝</span> Course Results
+            </a>
+        </nav>
+    </aside>
+
+    <div class="main-content">
+        <header class="topbar">
+            <div class="topbar-title">
+                @ViewData["Title"]
+                <span>Training Management System</span>
+            </div>
+        </header>
+
+        <main class="page-content">
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success">✅ @TempData["Success"]</div>
+            }
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger">❌ @TempData["Error"]</div>
+            }
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/js/site.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>
