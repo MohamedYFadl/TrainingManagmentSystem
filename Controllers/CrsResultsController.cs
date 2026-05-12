@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace MVC02.Controllers
 {
+    [Route("CrsResults")]
     public class CrsResultsController : Controller
     {
         private readonly IGenericRepository<CrsResult> _crsRepo;
@@ -15,8 +16,11 @@ namespace MVC02.Controllers
         {
             _crsRepo = crsRepo;
         }
+        [HttpGet("{traineeId:int?}/{courseId:int?}")]
+        // for testing https://localhost:7189/CrsResults/1/1
+        // https://localhost:7189/CrsResults/7/3
         public async Task<IActionResult> Index(string? search,int? traineeId,int? courseId, int pageIndex = 1, int pageSize = 5)
-        {
+         {
             var CrsResultSpecs = new CrsResultSpecsParams
             {
                 PageIndex = pageIndex,
@@ -43,7 +47,7 @@ namespace MVC02.Controllers
                 MinDegree = c.Course.MinDegree
             }).ToList();
 
-            var paingation = new PaginatedList<CrsResultViewModel>(CrsResultVm, count, pageIndex, pageSize);
+            var paingation = new PaginatedList<CrsResultViewModel>(CrsResultVm, count, pageIndex,pageSize);
 
             return View(paingation);
         }

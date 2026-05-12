@@ -43,6 +43,13 @@ namespace MVC02
 
             app.MapStaticAssets();
             app.UseSession();
+
+            // for test https://localhost:7189/CrsResults/Index/1/1
+            //app.MapControllerRoute(
+            //    name: "result",
+            //    pattern: "{controller=CrsResults}/{action=Index}/{traineeId:int?}/{courseId:int?}")
+            //    .WithStaticAssets();
+
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}")
