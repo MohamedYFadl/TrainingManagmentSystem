@@ -1,0 +1,37 @@
+@model CrsResult
+@{ ViewData["Title"] = "Edit Course Result"; }
+
+<div class="page-header">
+    <div><h1>✏️ Edit Course Result</h1></div>
+    <a asp-action="Index" class="btn btn-ghost">← Back</a>
+</div>
+
+<div class="card" style="max-width:600px">
+    <div class="card-header"><div class="card-title">Result #@Model.Id</div></div>
+    <div class="card-body">
+        <form asp-action="Edit">
+            <input type="hidden" asp-for="Id" />
+            <div asp-validation-summary="ModelOnly" class="validation-summary-errors"></div>
+            <div class="form-group">
+                <label asp-for="TraineeId" class="form-label">Trainee</label>
+                <select asp-for="TraineeId" asp-items="ViewBag.Trainees" class="form-control">
+                    <option value="">-- Select Trainee --</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Crs_Id" class="form-label">Course</label>
+                <select asp-for="Crs_Id" asp-items="ViewBag.Courses" class="form-control">
+                    <option value="">-- Select Course --</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Degree" class="form-label">Degree</label>
+                <input asp-for="Degree" class="form-control" />
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">💾 Save Changes</button>
+                <a asp-action="Index" class="btn btn-ghost">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

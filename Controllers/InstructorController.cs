@@ -60,24 +60,15 @@ namespace MVC02.Controllers
 
             return View(pagination);
         }
+        [HttpGet]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
             var specs = new InstructorGetByIdSpecs(id.Value);
             var instructor = await instructorRepo.GetByIdAsync(specs);
             if (instructor == null) return NotFound();
-            var insVm = new InsViewModel
-            {
-                Id = instructor.Id,
-                InsName = instructor.Name,
-                InsSalary = instructor.Salary,
-                InsAddress = instructor.Address,
-                CourseName = instructor.Course.Name,
-                DepartmentName = instructor.Department.Name,
-                ImgeUrl = instructor.ImageUrl
-            };
-            PopulateDropdowns(instructor);
-            return View(insVm);
+            await PopulateDropdowns(instructor);
+            return View(instructor);
         }
 
         [HttpPost]
@@ -102,7 +93,7 @@ namespace MVC02.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            PopulateDropdowns();
+            await PopulateDropdowns();
             return View(insCrs);
         }
 

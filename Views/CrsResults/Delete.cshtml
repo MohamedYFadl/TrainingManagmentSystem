@@ -1,0 +1,19 @@
+@model CrsResult
+@{ ViewData["Title"] = "Delete Result"; }
+
+<div class="page-header"><div><h1>🗑 Delete Result</h1></div><a asp-action="Index" class="btn btn-ghost">← Back</a></div>
+
+<div style="max-width:500px">
+    <div class="delete-warning">
+        <div class="warn-icon">⚠️</div>
+        <h3>Confirm Deletion</h3>
+        <p>Delete result for <strong>@(Model.Trainee?.Name ?? "—")</strong> in <strong>@(Model.Course?.Name ?? "—")</strong> (Degree: @(Model.Degree))?</p>
+    </div>
+    <form asp-action="Delete" style="margin-top:16px">
+        <input type="hidden" asp-for="Id" />
+        <div class="form-actions">
+            <button type="submit" class="btn btn-danger">🗑 Yes, Delete</button>
+            <a asp-action="Index" class="btn btn-ghost">Cancel</a>
+        </div>
+    </form>
+</div>

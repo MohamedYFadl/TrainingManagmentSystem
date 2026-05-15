@@ -9,6 +9,6 @@ namespace MVC02.Models
         public int Grade { get; set; }
         [ForeignKey("Department")]
         public int DeptId { get; set; }
-        public Department Department { get; set; }
+        public Department? Department { get; set; }
     }
 }

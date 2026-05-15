@@ -11,6 +11,9 @@ namespace MVC02.Specifications.InstructorSpecs
         {
             Includes.Add(i=>i.Course);
             Includes.Add(i=>i.Department);
+            ApplyPagaination((input.PageIndex - 1) * input.PageSize,
+            input.PageSize);
+
         }
     }
 }

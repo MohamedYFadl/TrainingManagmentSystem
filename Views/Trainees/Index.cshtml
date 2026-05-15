@@ -1,0 +1,72 @@
+@model PaginatedList<Trainee>
+@{ ViewData["Title"] = "Trainees"; }
+
+<div class="page-header">
+    <div><h1>🧑‍🎓 Trainees</h1><p>Manage all trainees</p></div>
+    <a asp-action="Create" class="btn btn-primary">+ New Trainee</a>
+</div>
+
+<div class="card">
+    <div class="list-toolbar">
+        <form method="get" asp-action="Index" class="search-wrapper" id="searchForm">
+            <span class="search-icon">🔍</span>
+            <input type="text" name="search" class="search-input" style="border-radius:var(--radius-sm) 0 0 var(--radius-sm);border-right:none" placeholder="Search by name, grade, department…"
+                   value="@ViewBag.Search" id="searchInput" autocomplete="off" />
+            <button type="submit" class="btn btn-primary" style="border-radius:0 var(--radius-sm) var(--radius-sm) 0;padding:9px 16px;flex-shrink:0">Search</button>
+            @if (!string.IsNullOrEmpty(ViewBag.Search as string))
+            {
+                <button type="button" class="search-clear" onclick="clearSearch()">×</button>
+            }
+        </form>
+        @if (!string.IsNullOrEmpty(ViewBag.Search as string))
+        {
+            <span class="search-tag">"@ViewBag.Search" <a asp-action="Index" style="color:inherit;text-decoration:none">×</a></span>
+        }
+        <span style="margin-left:auto;font-size:13px;color:var(--text-muted)">@Model.TotalCount record@(Model.TotalCount != 1 ? "s" : "")</span>
+    </div>
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr><th>#</th><th>Name</th><th>Department</th><th>Grade</th><th>Address</th><th>Actions</th></tr>
+            </thead>
+            <tbody>
+                @if (!Model.Data.Any())
+                {
+                    <tr><td colspan="6"><div class="empty-state"><div class="empty-icon">🔍</div><p>@(string.IsNullOrEmpty(ViewBag.Search as string) ? "No trainees found." : $"No results for \"{ViewBag.Search}\"")</p></div></td></tr>
+                }
+                @foreach (var t in Model.Data)
+                {
+                    <tr>
+                        <td class="mono text-muted">@t.Id</td>
+                        <td>
+                            <div class="d-flex align-center gap-2">
+                                <div class="avatar">@if (!string.IsNullOrEmpty(t.ImageUrl)){<img src="@t.ImageUrl" />}else{@t.Name[0]}</div>
+                                <span class="fw-bold text-primary">@t.Name</span>
+                            </div>
+                        </td>
+                        <td>@(t.Department?.Name ?? "—")</td>
+                        <td><span class="badge badge-success">@(t.Grade)</span></td>
+                        <td>@(t.Address ?? "—")</td>
+                        <td>
+                            <div class="d-flex gap-2">
+                                <a asp-action="Details" asp-route-id="@t.Id" class="btn btn-ghost btn-sm">👁</a>
+                                <a asp-action="Edit" asp-route-id="@t.Id" class="btn btn-outline btn-sm">✏️ Edit</a>
+                                <a asp-action="Delete" asp-route-id="@t.Id" class="btn btn-danger btn-sm">🗑</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @await Html.PartialAsync("_Pagination", new {
+        Model.PageIndex, Model.TotalPages, Model.TotalCount, Model.PageSize,
+        Search = ViewBag.Search as string ?? "", Action = "Index", Controller = "Trainees"
+    })
+</div>
+
+<script>
+    function clearSearch(){document.getElementById('searchInput').value='';document.getElementById('searchForm').submit();}
+</script>

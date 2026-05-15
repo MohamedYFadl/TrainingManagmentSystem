@@ -1,0 +1,97 @@
+@model TraineeVmRequest
+@{ ViewData["Title"] = "Edit Trainee"; }
+
+<div class="page-header">
+    <div><h1>✏️ Edit Trainee</h1></div>
+    <a asp-action="Index" class="btn btn-ghost">← Back</a>
+</div>
+
+<div class="card" style="max-width:700px">
+    <div class="card-header"><div class="card-title">Trainee #@Model.Id</div></div>
+    <div class="card-body">
+        <form asp-action="Edit">
+            <input type="hidden" asp-for="Id" />
+            <div asp-validation-summary="ModelOnly" class="validation-summary-errors"></div>
+            <div class="form-group">
+                <label class="form-label">Profile Photo</label>
+                <div class="img-upload-zone" id="uploadZone" onclick="document.getElementById('imageFile').click()">
+                    <div class="img-upload-preview" id="previewWrap" style="display:@(string.IsNullOrEmpty(Model.ImageUrl) ? "none" : "flex")">
+                        <img id="previewImg" src="@(Model.ImageUrl ?? "")" alt="Profile" />
+                        <button type="button" class="img-remove-btn" onclick="removeImage(event)">×</button>
+                    </div>
+                    <div class="img-upload-placeholder" id="placeholder" style="display:@(string.IsNullOrEmpty(Model.ImageUrl) ? "flex" : "none")">
+                        <div class="img-upload-icon">📷</div>
+                        <p class="img-upload-text">Click or drag & drop a photo</p>
+                        <p class="img-upload-hint">JPG, PNG, WEBP up to 5MB</p>
+                    </div>
+                </div>
+                <input type="file" id="imageFile" name="imageFile" accept="image/*" style="display:none" onchange="previewImage(event)" />
+            </div>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label asp-for="Name" class="form-label">Full Name *</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="field-validation-error"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Grade" class="form-label">Grade</label>
+                    <input asp-for="Grade" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="DeptId" class="form-label">Department</label>
+                    <select asp-for="DeptId" asp-items="ViewBag.Departments" class="form-control">
+                        <option value="">-- Select Department --</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Address" class="form-label">Address</label>
+                    <input asp-for="Address" class="form-control" />
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">💾 Save Changes</button>
+                <a asp-action="Index" class="btn btn-ghost">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        const zone = document.getElementById('uploadZone');
+
+        zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+        zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+        zone.addEventListener('drop', e => {
+            e.preventDefault(); zone.classList.remove('drag-over');
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const dt = new DataTransfer(); dt.items.add(file);
+                document.getElementById('imageFile').files = dt.files;
+                showPreview(file);
+            }
+        });
+
+        function previewImage(e) { if (e.target.files[0]) showPreview(e.target.files[0]); }
+
+        function showPreview(file) {
+            const reader = new FileReader();
+            reader.onload = ev => {
+                document.getElementById('previewImg').src = ev.target.result;
+                document.getElementById('previewWrap').style.display = 'flex';
+                document.getElementById('placeholder').style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function removeImage(e) {
+            e.stopPropagation();
+            document.getElementById('imageFile').value = '';
+            // Clear the hidden ImageUrl so existing image is removed on save
+            document.querySelector('input[name="ImageUrl"]').value = '';
+            document.getElementById('previewWrap').style.display = 'none';
+            document.getElementById('placeholder').style.display = 'flex';
+        }
+    </script>
+}
+

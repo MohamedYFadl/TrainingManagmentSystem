@@ -1,0 +1,27 @@
+@model CrsResultViewModel
+@{ ViewData["Title"] = "Result Details"; }
+
+<div class="page-header">
+    <div><h1>📝 Result #@Model.Id</h1></div>
+    <div class="d-flex gap-2">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline">✏️ Edit</a>
+        <a asp-action="Index" class="btn btn-ghost">← Back</a>
+    </div>
+</div>
+
+<div class="card" style="max-width:500px">
+    <div class="card-header"><div class="card-title">Details</div></div>
+    <div class="card-body">
+        <div class="detail-grid">
+            <div class="detail-item"><div class="detail-label">Trainee</div><div class="detail-value">@(Model.TraineeName ?? "—")</div></div>
+            <div class="detail-item"><div class="detail-label">Course</div><div class="detail-value">@(Model.CourseName ?? "—")</div></div>
+            <div class="detail-item"><div class="detail-label">Degree</div><div class="detail-value mono">@(Model.Degree)</div></div>
+            <div class="detail-item">
+                <div class="detail-label">Status</div>
+                <div class="detail-value">
+                    <span class="badge @(Model.Degree >= Model.MinDegree ? "badge-success" : "badge-warning")">@(Model.Degree >= Model.MinDegree     ? "Pass" : "Fail")</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

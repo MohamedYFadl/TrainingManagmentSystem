@@ -8,9 +8,9 @@ namespace MVC02.Models
         public int Degree { get; set; }
         [ForeignKey("Course")]
         public int Crs_Id { get; set; }
-        public Course Course { get; set; }
+        public Course? Course { get; set; }
         [ForeignKey("Trainee")]
         public int TraineeId { get; set; }
-        public Trainee Trainee { get; set; }
+        public Trainee? Trainee { get; set; }
     }
 }

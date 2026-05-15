@@ -69,14 +69,13 @@
         </table>
     </div>
 
-@*     @await Html.PartialAsync("_Pagination", new {
+    @await Html.PartialAsync("_Pagination", new {
         Model.PageIndex, Model.TotalPages, Model.TotalCount, Model.PageSize,
-        Search = ViewBag.Search as string ?? "", Action = "Index", Controller = "Instructors"
+        Search = ViewBag.Search as string ?? "", Action = "Index", Controller = "Instructor"
         })
- *@</div>
+</div>
 
-@* <script>
+ <script>
     let t; document.getElementById('searchInput').addEventListener('input', function(){clearTimeout(t);t=setTimeout(()=>document.getElementById('searchForm').submit(),400);});
     function clearSearch(){document.getElementById('searchInput').value='';document.getElementById('searchForm').submit();}
 </script>
- *@
