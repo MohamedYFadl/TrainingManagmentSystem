@@ -2,6 +2,7 @@
 using MVC02.Interfaces;
 using MVC02.Models;
 using MVC02.Specifications;
+using MVC02.Specifications.CourseResult;
 using MVC02.ViewModels;
 using System.Threading.Tasks;
 

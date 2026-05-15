@@ -5,6 +5,7 @@ using MVC02.Interfaces;
 using MVC02.Models;
 using MVC02.Repositories;
 using MVC02.Specifications;
+using MVC02.Specifications.InstructorSpecs;
 using MVC02.ViewModels;
 
 namespace MVC02.Controllers
@@ -59,10 +60,57 @@ namespace MVC02.Controllers
 
             return View(pagination);
         }
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null) return NotFound();
+            var specs = new InstructorGetByIdSpecs(id.Value);
+            var instructor = await instructorRepo.GetByIdAsync(specs);
+            if (instructor == null) return NotFound();
+            var insVm = new InsViewModel
+            {
+                Id = instructor.Id,
+                InsName = instructor.Name,
+                InsSalary = instructor.Salary,
+                InsAddress = instructor.Address,
+                CourseName = instructor.Course.Name,
+                DepartmentName = instructor.Department.Name,
+                ImgeUrl = instructor.ImageUrl
+            };
+            PopulateDropdowns(instructor);
+            return View(insVm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(InsViewModel insCrs, IFormFile? imageFile)
+        {
+            if (insCrs == null) return NotFound();
+            ModelState.Remove("ImageUrl");
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var existing = await instructorRepo.GetByIdAsync(insCrs.Id);
+                    existing.ImageUrl = await SaveImageAsync(imageFile, existing?.ImageUrl);
+                    await instructorRepo.UpdateAsync(existing);
+                    TempData["Success"] = "Instructor updated successfully!";
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (await instructorRepo.GetByIdAsync(insCrs.Id) == null) return NotFound();
+                    throw;
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            PopulateDropdowns();
+            return View(insCrs);
+        }
+
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var instructor = await instructorRepo.GetByIdAsync(id);
+            var specs = new InstructorGetByIdSpecs(id);
+            var instructor = await instructorRepo.GetByIdAsync(specs);
             if(instructor == null)
                 return NotFound();
 
@@ -140,6 +188,40 @@ namespace MVC02.Controllers
             await imageFile.CopyToAsync(stream);
 
             return $"/images/instructors/{fileName}";
+        }
+
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null) return NotFound();
+            var instructor = await instructorRepo.GetByIdAsync(id.Value);
+            if (instructor == null) return NotFound();
+            var InsVm = new InsViewModel
+            {
+                Id = instructor.Id,
+                InsName = instructor.Name,
+            };
+            return View(InsVm);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var instructor = await instructorRepo.GetByIdAsync(id);
+            if (instructor != null)
+            {
+                // Delete image file from disk
+                if (!string.IsNullOrEmpty(instructor.ImageUrl))
+                {
+                    var imgPath = Path.Combine(_env.WebRootPath, instructor.ImageUrl.TrimStart('/'));
+                    if (System.IO.File.Exists(imgPath))
+                        System.IO.File.Delete(imgPath);
+                }
+               await instructorRepo.RemoveAsync(instructor.Id);
+
+            }
+            TempData["Success"] = "Instructor deleted successfully!";
+            return RedirectToAction(nameof(Index));
         }
 
     }

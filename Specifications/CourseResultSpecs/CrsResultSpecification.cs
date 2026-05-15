@@ -1,6 +1,6 @@
 ﻿using MVC02.Models;
 
-namespace MVC02.Specifications
+namespace MVC02.Specifications.CourseResult
 {
     public class CrsResultSpecification : BaseSpecification<CrsResult>
     {

@@ -811,7 +811,7 @@ select.form-control option {
 .search-wrapper {
     position: relative;
     flex: 1;
-    max-width: 400px;
+    max-width: 450px;
 }
 
     .search-wrapper .search-icon {

@@ -49,7 +49,7 @@ namespace MVC02.Migrations
 
                     b.HasIndex("DeptId");
 
-                    b.ToTable("Courses");
+                    b.ToTable("Courses", (string)null);
 
                     b.HasData(
                         new
@@ -131,7 +131,7 @@ namespace MVC02.Migrations
 
                     b.HasIndex("TraineeId");
 
-                    b.ToTable("CrsResults");
+                    b.ToTable("CrsResults", (string)null);
 
                     b.HasData(
                         new
@@ -210,7 +210,7 @@ namespace MVC02.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Departments");
+                    b.ToTable("Departments", (string)null);
 
                     b.HasData(
                         new
@@ -279,7 +279,7 @@ namespace MVC02.Migrations
 
                     b.HasIndex("DeptId");
 
-                    b.ToTable("Instructors");
+                    b.ToTable("Instructors", (string)null);
 
                     b.HasData(
                         new
@@ -374,7 +374,7 @@ namespace MVC02.Migrations
 
                     b.HasIndex("DeptId");
 
-                    b.ToTable("Trainees");
+                    b.ToTable("Trainees", (string)null);
 
                     b.HasData(
                         new

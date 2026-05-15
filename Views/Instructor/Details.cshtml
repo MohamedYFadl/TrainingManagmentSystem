@@ -1,29 +1,42 @@
 ﻿@model InsViewModel
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Instructor Details";
 }
 
-<div class="container mt-5">
-    <div class="card shadow-lg p-4">
-        <div class="row align-items-center">
+<div class="page-header">
+    <div><h1>👨‍🏫 @Model.InsName</h1><p>Instructor profile</p></div>
+    <div class="d-flex gap-2">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline">✏️ Edit</a>
+        <a asp-action="Index" class="btn btn-ghost">← Back</a>
+    </div>
+</div>
 
-            <div class="col-md-4 text-center">
-                <img src="~/images/@Model.ImgeUrl"
-                     class="img-fluid rounded-circle border border-3"
-                     style="width:200px; height:200px; object-fit:cover;" />
+<div class="card" style="max-width:640px">
+    <div class="card-header"><div class="card-title">Profile</div></div>
+    <div class="card-body">
+        <div class="instructor-profile">
+            <div class="instructor-photo">
+                @if (!string.IsNullOrEmpty(Model.ImgeUrl))
+                {
+                    <img src="@Model.ImgeUrl" alt="@Model.InsName" />
+                }
+                else
+                {
+                    <div class="instructor-photo-placeholder">@Model.InsName[0]</div>
+                }
             </div>
-
-            <div class="col-md-8">
-                <h2 class="mb-3">@Model.InsName</h2>
-
-                <p><strong>💰 Salary:</strong> @Model.InsSalary.ToString("C")</p>
-                <p><strong>📍 Address:</strong> @Model.InsAddress</p>
-                <p><strong>🏢 Department:</strong> @Model.DepartmentName</p>
-                <p><strong>📚 Course:</strong> @Model.CourseName</p>
-
-                <a asp-action="Index" class="btn btn-secondary mt-3">Back</a>
+            <div class="instructor-meta">
+                <h2>@Model.InsName</h2>
+                <p>@(Model.DepartmentName ?? "No Department")</p>
             </div>
+        </div>
 
+        <div class="detail-grid" style="margin-top:24px">
+            <div class="detail-item"><div class="detail-label">ID</div><div class="detail-value mono">#@Model.Id</div></div>
+            <div class="detail-item"><div class="detail-label">Department</div><div class="detail-value">@(Model.DepartmentName ?? "—")</div></div>
+            <div class="detail-item"><div class="detail-label">Course</div><div class="detail-value">@(Model.CourseName ?? "—")</div></div>
+            <div class="detail-item"><div class="detail-label">Salary</div><div class="detail-value mono">@(Model.InsSalary)</div></div>
+            <div class="detail-item" style="grid-column:1/-1"><div class="detail-label">Address</div><div class="detail-value">@(Model.InsAddress ?? "—")</div></div>
         </div>
     </div>
 </div>

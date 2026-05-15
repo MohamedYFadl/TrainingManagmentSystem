@@ -1,0 +1,81 @@
+﻿@model DeptVm
+@{
+    ViewData["Title"] = "Department Details";
+}
+
+<div class="page-header">
+    <div>
+        <h1>🏢 @Model.Name</h1>
+        <p>Department details and members</p>
+    </div>
+    <div class="d-flex gap-2">
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline">✏️ Edit</a>
+        <a asp-action="Index" class="btn btn-ghost">← Back</a>
+    </div>
+</div>
+
+<div class="card" style="max-width:600px; margin-bottom:20px">
+    <div class="card-header"><div class="card-title">Info</div></div>
+    <div class="card-body">
+        <div class="detail-grid">
+            <div class="detail-item">
+                <div class="detail-label">ID</div>
+                <div class="detail-value mono">#@Model.Id</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Name</div>
+                <div class="detail-value">@Model.Name</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Manager</div>
+                <div class="detail-value">@(Model.Manager ?? "—")</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="dashboard-grid">
+    <div class="card">
+        <div class="card-header"><div class="card-title">👨‍🏫 Instructors (@Model.Instructors.Count)</div></div>
+        <div class="table-wrapper">
+            <table>
+                <thead><tr><th>Name</th><th>Salary</th></tr></thead>
+                <tbody>
+                    @if (!Model.Instructors.Any())
+                    {
+                        <tr><td colspan="2" class="text-muted">No instructors</td></tr>
+                    }
+                    @foreach (var i in Model.Instructors)
+                    {
+                        <tr>
+                            <td class="fw-bold text-primary">@i.Name</td>
+                            <td class="mono">@(i.Salary)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header"><div class="card-title">🧑‍🎓 Trainees (@Model.Trainees.Count)</div></div>
+        <div class="table-wrapper">
+            <table>
+                <thead><tr><th>Name</th><th>Grade</th></tr></thead>
+                <tbody>
+                    @if (!Model.Trainees.Any())
+                    {
+                        <tr><td colspan="2" class="text-muted">No trainees</td></tr>
+                    }
+                    @foreach (var t in Model.Trainees)
+                    {
+                        <tr>
+                            <td class="fw-bold text-primary">@t.Name</td>
+                            <td><span class="badge badge-success">@(t.Grade)</span></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,5 +1,4 @@
-﻿using MVC02.Migrations;
-using MVC02.Models;
+﻿using MVC02.Models;
 
 namespace MVC02.Specifications
 {
@@ -7,8 +6,8 @@ namespace MVC02.Specifications
     {
         public CourseSpecs(InputSpecsParams inputParams)
             :base(
-            c => (string.IsNullOrEmpty(inputParams.Search) || c.Name.ToLower().Contains(inputParams.Search.ToLower()))
-            || (string.IsNullOrEmpty(inputParams.Search) || c.Department.Name.ToLower().Contains(inputParams.Search.ToLower())))
+            c => string.IsNullOrEmpty(inputParams.Search) || c.Name.ToLower().Contains(inputParams.Search.ToLower())
+            || string.IsNullOrEmpty(inputParams.Search) || c.Department.Name.ToLower().Contains(inputParams.Search.ToLower()))
         {
             Includes.Add(c=>c.Department);
             if (!string.IsNullOrEmpty(inputParams.Sort))

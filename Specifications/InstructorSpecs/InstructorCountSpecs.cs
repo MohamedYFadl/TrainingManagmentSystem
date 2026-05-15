@@ -1,6 +1,6 @@
 ﻿using MVC02.Models;
 
-namespace MVC02.Specifications
+namespace MVC02.Specifications.InstructorSpecs
 {
     public class InstructorCountSpecs : BaseSpecification<Instructor>
     {

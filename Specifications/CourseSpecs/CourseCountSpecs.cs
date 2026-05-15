@@ -1,5 +1,6 @@
 ﻿using MVC02.Models;
 
+
 namespace MVC02.Specifications
 {
     public class CourseCountSpecs : BaseSpecification<Course>

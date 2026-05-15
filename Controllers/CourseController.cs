@@ -137,7 +137,9 @@ namespace MVC02.Controllers
             Course course = await _courseRepository.GetByIdAsync(courseSpec);
             if (course == null)
                 return NotFound();
-                
+
+            var instructors = await _instructorRepository.GetAllAsync();
+            var crsResults = await _crsResultRepository.GetAllAsync();
             var courseVm = new CourseDeptVm
             {
                 Id = course.Id,
@@ -147,8 +149,8 @@ namespace MVC02.Controllers
                 Hours = course.Hours,
                 DeptId = course.DeptId,
                 DepartmentName = course.Department.Name,
-                Instructors = _instructorRepository.GetAllAsync().Result.Where(i => i.Crs_id == course.Id).ToList(),
-                CrsResults = _crsResultRepository.GetAllAsync().Result.Where(r => r.Crs_Id == course.Id).ToList()
+                Instructors = instructors.Where(i => i.Crs_id == course.Id).ToList(),
+                CrsResults = crsResults.Where(r => r.Crs_Id == course.Id).ToList()
             };
             return View(courseVm);
         }

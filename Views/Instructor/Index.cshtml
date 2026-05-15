@@ -15,7 +15,7 @@
     <div class="list-toolbar">
         <form method="get" asp-action="Index" class="search-wrapper" id="searchForm">
             <span class="search-icon">🔍</span>
-            <input type="text" name="search" class="search-input" placeholder="Search by instructor name"
+            <input type="text" name="search" class="search-input" placeholder="Search by instructor name, department, or course"
                    value="@ViewBag.Search" id="searchInput" autocomplete="off" />
             <button type="submit" class="search-submit btn btn-primary">Search</button>
             @if (!string.IsNullOrEmpty(ViewBag.Search as string))

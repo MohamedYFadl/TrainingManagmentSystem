@@ -1,0 +1,21 @@
+﻿@model InsViewModel
+@{
+    ViewData["Title"] = "Delete Instructor";
+}
+
+<div class="page-header"><div><h1>🗑 Delete Instructor</h1></div><a asp-action="Index" class="btn btn-ghost">← Back</a></div>
+
+<div style="max-width:500px">
+    <div class="delete-warning">
+        <div class="warn-icon">⚠️</div>
+        <h3>Confirm Deletion</h3>
+        <p>Are you sure you want to delete instructor <strong>"@Model.InsName"</strong>?</p>
+    </div>
+    <form asp-action="Delete" style="margin-top:16px">
+        <input type="hidden" asp-for="Id" />
+        <div class="form-actions">
+            <button type="submit" class="btn btn-danger">🗑 Yes, Delete</button>
+            <a asp-action="Index" class="btn btn-ghost">Cancel</a>
+        </div>
+    </form>
+</div>
